@@ -84,14 +84,31 @@ int is_prime_miller (long p , int k) {
 
 /*
  * Random prime number generator
- * low_size: lower bound for the expected prime (bitsize? au plus 7 bits)
- * up_size: upper bound for expected prime
+ * low_size: lower bitsize bound for the expected prime 
+ * up_size: upper bitsize bound for expected prime (at most 7)
  * k: number of miller rabin tests
 */
 long random_prime_number(int low_size, int up_size, int k) {
     long n;
+    long low = 1 << low_size;
+    long up = 1 << up_size;
     do {
-        n = rand_long(low_size,up_size);
+        n = rand_long(low, up);
     } while(!is_prime_miller(n,k));
     return n;
 }
+
+/* Euclid's gcd, returns gcd between s and t and (u,v) Bezout's coefficients */
+long extended_gcd(long s, long t, long* u, long* v) {
+    if (s == 0) {
+        *u = 0;
+        *v = 1;
+        return t ;
+    }
+    long uPrim , vPrim ;
+    long gcd = extended_gcd (t %s , s , & uPrim , & vPrim ) ;
+    *u = vPrim -( t / s ) * uPrim ;
+    *v = uPrim ;
+    return gcd ;
+}
+

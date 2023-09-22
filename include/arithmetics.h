@@ -3,6 +3,7 @@
 
 #include <math.h>
 #include <stdlib.h>
+#include <time.h>
 
 /* Naive implementation in O(sqrt(n))*/
 int is_sprime_naive(long p);
@@ -30,5 +31,7 @@ int is_prime_miller (long p , int k);
 */
 long random_prime_number(int low_size, int up_size, int k);
 
+/* Euclid's gcd, returns gcd between s and t and (u,v) Bezout's coefficients */
+long extended_gcd(long s, long t, long* u, long* v);
 
 #endif

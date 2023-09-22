@@ -5,8 +5,8 @@ Another aspect to consider is the user-friendliness for voters. Specifically, a 
 The objective of this project is to propose a framework for considering the protocols and data structures to effectively implement the process of designating the election winner while ensuring the integrity, security, and transparency of the election.
 
 In this project, we consider the organization of an electoral process by single-member majority voting in two rounds (like here in France).
-— Part 1: Implementation of cryptography tools.
-— Part 2: Creation of a declaration system secured by asymmetric encryption.
-— Part 3: Handling of a centralized declaration database.
-— Part 4: Implementation of a consensus mechanism.
-— Part 5: Handling a decentralized declaration base
+    Part 1: Implementation of cryptography tools.
+    Part 2: Creation of a declaration system secured by asymmetric encryption. 
+    Part 3: Handling of a centralized declaration database.
+    Part 4: Implementation of a consensus mechanism.
+    Part 5: Handling a decentralized declaration base
