@@ -1,6 +1,6 @@
-FLAGS = -Iinclude -Wall
+FLAGS = -Iinclude -Wall -lm
 
-OBJECTS = obj/list.o obj/file_hash.o obj/worktree_handler.o obj/commit_handler.o obj/reference_handler.o obj/branch_handler.o obj/merge_handler.o obj/utilities.o
+OBJECTS = obj/arithmetics.o
 
 all: bin/main_test bin/main
 

@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "crypto.h"
+#include "arithmetics.h"
 
 int main() {
 
