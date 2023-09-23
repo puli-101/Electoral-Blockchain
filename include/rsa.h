@@ -5,6 +5,11 @@
 #include <string.h>
 #include <stdio.h>
 
+typedef struct {
+    unsigned long val;
+    unsigned long n;
+} Key;
+
 /*
  * Permet de generer la cle publique pkey = (s, n) 
  * et la cle secrete skey = (u, n), a partir des nombres premiers 
@@ -25,5 +30,17 @@ long* encrypt(char* chaine, long s, long n);
  * This function returns a string corresponding to the original message
 */
 char* decrypt(long* crypted, int size, long u, long n);
+
+/* Initializes an already malloced */
+void init_key(Key* key, long val, long n);
+
+/* Initializes an already malloced pk and sk*/
+void init_pair_keys(Key* pKey, Key* sKey, long low_size, long up_size);
+
+/*translates a Key type to a string with the format (x,y) ; x,y in hexadecimal*/
+char* key_to_str(Key* key);
+
+/*translates a string with the format (x,y) in hexadecimal into a Key*/
+Key* str_to_key(char* str);
 
 #endif

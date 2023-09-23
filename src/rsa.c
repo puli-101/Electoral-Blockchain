@@ -59,3 +59,54 @@ char* decrypt(long* crypted, int size, long u, long n) {
     }
     return str;
 }
+
+/* Initializes an already malloced */
+void init_key(Key* key, long val, long n) {
+    key->val = val;
+    key->n = n;
+}
+
+/* Initializes an already malloced pk and sk*/
+void init_pair_keys(Key* pKey, Key* sKey, long low_size, long up_size) {
+    long p = random_prime_number(low_size, up_size, 100) ;
+    long q = random_prime_number(low_size, up_size, 100) ;
+    while (p == q) {
+        q = random_prime_number(low_size, up_size, 100) ;
+    }
+
+    long n, s, u;
+    generate_key_values(p, q, &n, &s, &u);
+
+    pKey->val = s;
+    pKey->n = n;
+
+    sKey->val = u;
+    sKey->n = n; 
+}
+
+/*translates a Key type to a string with the format (x,y) ; x,y in hexadecimal*/
+char* key_to_str(Key* key) {
+    char* str = (char*)malloc(sizeof(char)*100);
+    if (str == NULL) {
+        fprintf(stderr,"Fatal Error: key_to_str\n");
+        exit(-1);
+    }
+
+    sprintf(str,"(%lx,%lx)",key->val,key->n);
+    return str;
+}
+
+/*translates a string with the format (x,y) in hexadecimal into a Key*/
+Key* str_to_key(char* str) {
+    Key* k = (Key*)malloc(sizeof(Key));
+    unsigned long val,n; 
+    if (k == NULL) {
+        fprintf(stderr,"Fatal Error: str_to_key(%s)\n",str);
+        exit(-1);
+    }
+
+    sscanf(str, " ( %lx , %lx ) ", &val, &n);
+    k->val = val;
+    k->n = n;
+    return k;
+}

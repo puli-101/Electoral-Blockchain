@@ -47,5 +47,18 @@ int main () {
     
     free(decoded);
     free(crypted);
+
+    Key pk,sk;
+    init_pair_keys(&pk,&sk,3,7);
+    char* pk_str = key_to_str(&pk), *sk_str = key_to_str(&sk);
+    printf("pk : (%ld,%ld) , sk : (%ld,%ld)\n",pk.val,pk.n,sk.val,sk.n);
+    printf("pk : %s , sk : %s\n",pk_str,sk_str);
+    Key* pk2 = str_to_key(pk_str), *sk2 = str_to_key(sk_str);
+    printf("pk : (%ld,%ld) , sk : (%ld,%ld)\n",pk2->val,pk2->n,sk2->val,sk2->n);
+
+    free(pk2);
+    free(sk2);
+    free(pk_str);
+    free(sk_str);
     return 0;
 }
