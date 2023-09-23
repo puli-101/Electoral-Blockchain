@@ -16,8 +16,8 @@ In this project, we consider the organization of an electoral process by single-
 
 In our model, each citizen has an electoral card defined by a pair of keys:
 
-    A secret (or private) key used to sign their vote declaration. This key should only be known to the citizen.
-    A public key allowing other citizens to verify the authenticity of their declaration (signature verification). This key is also used to identify them in a vote declaration, not only when they vote but also when someone wishes to vote on their behalf.
+- A secret (or private) key used to sign their vote declaration. This key should only be known to the citizen.
+- A public key allowing other citizens to verify the authenticity of their declaration (signature verification). This key is also used to identify them in a vote declaration, not only when they vote but also when someone wishes to vote on their behalf.
 
 In this exercise, we will see that signing a declaration is done by encrypting the content (using the secret key), and verifying a signature is simply done by decrypting it (using the public key).
 

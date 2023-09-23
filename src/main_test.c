@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "arithmetics.h"
 #include "rsa.h"
+#include "vote_handler.h"
 
 void print_long_vector (long* result, int size) {
     printf ("Vector: [ ") ;
@@ -10,55 +11,56 @@ void print_long_vector (long* result, int size) {
     printf ( " ] \n" ) ;
 }
 
-int main () {
-    srand (time ( NULL ) ) ;
+int main ( void ) {
 
-    //Generation de cle :
-    long p = random_prime_number(3 ,7 , 5000) ;
-    long q = random_prime_number(3 ,7 , 5000) ;
-    while ( p == q ) {
-        q = random_prime_number(3 ,7 , 5000) ;
+    srand ( time ( NULL ) ) ;
+
+    //Testing Init Keys
+    Key * pKey = malloc ( sizeof ( Key ) ) ;
+    Key * sKey = malloc ( sizeof ( Key ) ) ;
+    init_pair_keys ( pKey , sKey ,3 ,7) ;
+    printf ( "pKey : %lx , %lx \n" , pKey -> val , pKey -> n ) ;
+    printf ( "sKey : %lx , %lx \n" , sKey -> val , sKey -> n ) ;
+
+    //Testing Key Serialization
+    char * chaine = key_to_str ( pKey ) ;
+    printf ("key to str : %s \n" , chaine ) ;
+    Key * k = str_to_key ( chaine ) ;
+    printf ( "str to key : %lx , %lx \n" , k -> val , k -> n ) ;
+
+    //Testing signature
+    //Candidate keys:
+    Key * pKeyC = malloc ( sizeof ( Key ) ) ;
+    Key * sKeyC = malloc ( sizeof ( Key ) ) ;
+    init_pair_keys ( pKeyC , sKeyC ,3 ,7) ;
+    //Declaration:
+    char * mess = key_to_str ( pKeyC ) ;
+    printf ( "%s vote pour %s \n" , key_to_str ( pKey ) , mess ) ;
+    Signature * sgn = sign ( mess , sKey ) ;
+    printf ( "signature : " ) ;
+    print_long_vector ( sgn -> content , sgn -> size ) ;
+    chaine = signature_to_str ( sgn ) ;
+    printf ( "signature to str : %s \n" , chaine ) ;
+    sgn = str_to_signature ( chaine ) ;
+    printf ( "str to signature : " ) ;
+    print_long_vector ( sgn -> content , sgn -> size ) ;
+
+    //Testing protected:
+    Protected * pr = init_protected ( pKey , mess , sgn ) ;
+    //Verification:
+    if ( verify ( pr ) ) {
+        printf ( "Signature valide \n" ) ;
+    } else {
+        printf ( "Signature non valide \n" ) ;
     }
+    chaine = protected_to_str ( pr ) ;
+    printf ("protected to str : %s \n" , chaine ) ;
+    pr = str_to_protected ( chaine ) ;
+    printf ( "str to protected : %s %s %s \n" , key_to_str ( pr -> pKey ) ,pr -> mess , signature_to_str ( pr -> sgn ) ) ;
 
-    long n, s, u;
-    generate_key_values(p ,q ,&n ,&s ,&u ) ;
-    //Pour avoir des cles positives :
-    if (u < 0) {
-        long t = (p -1) *( q -1) ;
-        u = u + t ; //on aura toujours s*u mod t = 1
-    }
-
-    //Afichage des cles en hexadecimal
-    printf ("cle publique = (%lx ,%lx)\n", s, n);
-    printf ("cle privee = (%lx, %lx)\n", u, n );
-
-    //Chiffrement:
-    char mess [10] = "Hello";
-    int len = strlen ( mess ) ;
-    long* crypted = encrypt (mess,s , n);
-
-    printf ("Initial message : %s \n", mess) ;
-    printf ("Encoded representation : \n") ;
-    print_long_vector(crypted, len) ;
-
-    //Dechiffrement
-    char * decoded = decrypt (crypted, len, u, n) ;
-    printf (" Decoded : %s \n" , decoded) ;
-    
-    free(decoded);
-    free(crypted);
-
-    Key pk,sk;
-    init_pair_keys(&pk,&sk,3,7);
-    char* pk_str = key_to_str(&pk), *sk_str = key_to_str(&sk);
-    printf("pk : (%ld,%ld) , sk : (%ld,%ld)\n",pk.val,pk.n,sk.val,sk.n);
-    printf("pk : %s , sk : %s\n",pk_str,sk_str);
-    Key* pk2 = str_to_key(pk_str), *sk2 = str_to_key(sk_str);
-    printf("pk : (%ld,%ld) , sk : (%ld,%ld)\n",pk2->val,pk2->n,sk2->val,sk2->n);
-
-    free(pk2);
-    free(sk2);
-    free(pk_str);
-    free(sk_str);
+    free ( pKey ) ;
+    free ( sKey ) ;
+    free ( pKeyC ) ;
+    free ( sKeyC ) ;
     return 0;
 }
