@@ -45,6 +45,10 @@ int main ( void ) {
     printf ( "str to signature : " ) ;
     print_long_vector ( sgn -> content , sgn -> size ) ;
 
+    
+    printf("signature decrypted : %s\n", decrypt(sgn->content, sgn->size, pKey->val, pKey->n));
+    print_long_vector ( encrypt(mess,sKey->val, sKey->n) , strlen(mess)) ;
+
     //Testing protected:
     Protected * pr = init_protected ( pKey , mess , sgn ) ;
     //Verification:

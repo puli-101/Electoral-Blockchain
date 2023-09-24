@@ -27,10 +27,10 @@ ul modpow(ul a, ul m, ul n) {
     if (m == 0) {
         r = 1;
     } else {
-        b = modpow(a, m/2, n) % n;
-        r = b * b;
+        b = modpow(a, m/2, n);
+        r = b * b % n;
         if (m % 2 == 1)
-            r *= a;
+            r *= a % n;
     }  
     return r%n;
 }

@@ -10,14 +10,14 @@ void generate_key_values(ul p, ul q, ul* n, ul *s, ul *u) {
     ul t = (p-1)*(q-1);
     ul new_s = 3;
     ul filler;
-    ul pgcd = extended_gcd(new_s,t,u,&filler);
+    extended_gcd(new_s,t,u,&filler);
 
     //if new_s isnt invertible mod t then we try another random num
-    while (pgcd != 1) {
+    while ((new_s*(*u))%t != 1) {
         new_s = rand_long(3,t-1);
-        pgcd = extended_gcd(new_s,t,u,&filler);
+        extended_gcd(new_s,t,u,&filler);
+        *u %= t;
     }
-
     *s = new_s;
 }
 
