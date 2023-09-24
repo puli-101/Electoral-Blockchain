@@ -67,5 +67,7 @@ int main ( void ) {
     free ( sKey ) ;
     free ( pKeyC ) ;
     free ( sKeyC ) ;
+
+    generate_random_data(15,5);
     return 0;
 }

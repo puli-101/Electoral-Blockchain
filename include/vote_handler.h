@@ -46,4 +46,7 @@ char* protected_to_str(Protected* pr);
 //Input format: pKey msg signature
 Protected* str_to_protected(char* str);
 
+void free_signature(Signature* sgn);
+void free_protected(Protected* pr);
+
 #endif 

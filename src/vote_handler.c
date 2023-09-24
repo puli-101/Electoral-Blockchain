@@ -87,9 +87,15 @@ Protected* init_protected(Key* pKey, char* mess, Signature* sgn) {
         fprintf(stderr,"Fatal Error: init_protected(pkey,%s,sgn)\n",mess);
         exit(-1);
     }
-    prot->pKey = pKey;
-    prot->mess = mess; 
-    prot->sgn = sgn;
+    prot->pKey = (Key*)malloc(sizeof(Key));
+    if (prot->pKey == NULL) {
+        fprintf(stderr,"Fatal Error: init_protected(pkey,%s,sgn)\n",mess);
+        exit(-1);
+    }
+    prot->pKey->val = pKey->val;
+    prot->pKey->n = pKey->n;
+    prot->mess = strdup(mess); 
+    prot->sgn = init_signature(sgn->content,sgn->size);
     return prot;
 }
 
@@ -163,4 +169,16 @@ Protected* str_to_protected(char* str) {
     pr->sgn = str_to_signature(pt[2]);
 
     return pr;
+}
+
+void free_signature(Signature* sgn) {
+    free(sgn->content);
+    free(sgn);
+}
+
+void free_protected(Protected* pr) {
+    free_signature(pr->sgn);
+    free(pr->mess);
+    free(pr->pKey);
+    free(pr);
 }
