@@ -17,6 +17,7 @@ In this project, we consider the organization of an electoral process by single-
 - Part 4: Implementation of a consensus mechanism.
 - Part 5: Handling a decentralized declaration base
 
+## Implementation
 In our model, each citizen has an electoral card defined by a pair of keys:
 
 - A secret (or private) key used to sign their vote declaration. This key should only be known to the citizen.
@@ -33,3 +34,9 @@ Furthermore, in our context, a vote declaration simply involves transmitting the
 - The voter can then publish a secure declaration, consisting of their message "mess," the associated signature, and their public key. In this way, anyone wishing to verify the authenticity of the declaration can do so by decrypting the signature with voter E's public key: the result obtained should exactly match the message "mess."
 
 Limitations: it is supposed that the set of candidats is already known
+
+## Emulation
+
+To set up the election, it is necessary to first generate a unique electoral card for each citizen, including their public and private keys, and record all the public keys from these electoral cards. To ensure the anonymity of the vote, the system should not know to whom these public keys belong. Additionally, citizens are responsible for keeping their private keys and must use them when voting to transmit a signed vote declaration. The voting system collects the signed declarations as they arrive and verifies the authenticity of each vote before counting it. The system also needs to verify that each citizen has voted at most once.
+
+In the context of this project, we will simulate this voting process using three files: one containing the keys of all citizens, one indicating the candidates, and one containing signed declarations.

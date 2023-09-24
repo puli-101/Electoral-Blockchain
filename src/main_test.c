@@ -2,6 +2,7 @@
 #include "arithmetics.h"
 #include "rsa.h"
 #include "vote_handler.h"
+#include "simulation.h"
 
 void print_long_vector (unsigned long* result, int size) {
     printf ("Vector: [ ") ;

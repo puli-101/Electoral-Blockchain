@@ -1,6 +1,6 @@
 FLAGS = -Iinclude -Wall -lm
 
-OBJECTS = obj/arithmetics.o obj/rsa.o obj/vote_handler.o
+OBJECTS = obj/arithmetics.o obj/rsa.o obj/vote_handler.o obj/simulation.o
 
 all: bin/main_test bin/main
 
