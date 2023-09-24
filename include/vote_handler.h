@@ -4,12 +4,18 @@
 #include "rsa.h"
 
 typedef struct {
-    long* content;
+    unsigned long* content;
     int size;
 } Signature;
 
+typedef struct {
+    Key* pKey; //voters public key
+    char* mess; //vote declaration
+    Signature* sgn; //signature of vote
+} Protected;
+
 /* mallocs and initializes a signature using content and size */
-Signature* init_signature(long* content, int size);
+Signature* init_signature(unsigned long* content, int size);
 
 /* Creates a signature from a given string message using the secret key sKey*/
 Signature* sign(char* mess, Key* sKey);
@@ -27,5 +33,17 @@ char* signature_to_str(Signature* sgn);
  * into a signature
 */
 Signature* str_to_signature(char* str);
+
+/* Initializes a Protected type */
+Protected* init_protected(Key* pKey, char* mess, Signature* sgn);
+
+/* Verifies that the signature corresponds to the message on public key */
+int verify(Protected* pr);
+
+//Output format: pKey msg signature
+char* protected_to_str(Protected* pr);
+
+//Input format: pKey msg signature
+Protected* str_to_protected(char* str);
 
 #endif 

@@ -1,13 +1,13 @@
 #include "vote_handler.h"
 
 /* mallocs and initializes a signature using content and size */
-Signature* init_signature(long* content, int size) {
+Signature* init_signature(unsigned long* content, int size) {
     Signature* sig = (Signature*)malloc(sizeof(Signature));
     if (sig == NULL) {
         fprintf(stderr,"Fatal Error: init_signature\n");
         exit(-1);
     }
-    sig->content = (long*)malloc(sizeof(long)*size);
+    sig->content = (unsigned long*)malloc(sizeof(unsigned long)*size);
     sig->size = size;
 
     //memset
@@ -21,7 +21,7 @@ Signature* init_signature(long* content, int size) {
 /* Creates a signature from a given string message using the secret key sKey*/
 Signature* sign(char* mess, Key* sKey) {
     int size = strlen(mess);
-    long* tab = encrypt(mess,sKey->val, sKey->n);
+    unsigned long* tab = encrypt(mess,sKey->val, sKey->n);
     Signature* s = init_signature(tab, size);
     free(tab);
 
@@ -59,7 +59,7 @@ char* signature_to_str(Signature* sgn) {
 */
 Signature* str_to_signature(char* str) {
     int len = strlen ( str ) ;
-    long * content = ( long *) malloc ( sizeof ( long ) * len ) ;
+    unsigned long * content = (unsigned long *) malloc ( sizeof (unsigned long) * len ) ;
     int num = 0;
     char buffer [256];
     int pos = 0;
@@ -80,3 +80,87 @@ Signature* str_to_signature(char* str) {
     return init_signature ( content , num ) ;
 }
 
+/* Initializes a Protected type */
+Protected* init_protected(Key* pKey, char* mess, Signature* sgn) {
+    Protected* prot = (Protected*)malloc(sizeof(Protected));
+    if (prot == NULL) {
+        fprintf(stderr,"Fatal Error: init_protected(pkey,%s,sgn)\n",mess);
+        exit(-1);
+    }
+    prot->pKey = pKey;
+    prot->mess = mess; 
+    prot->sgn = sgn;
+    return prot;
+}
+
+/* Verifies that the signature corresponds to the message on public key */
+int verify(Protected* pr) {
+    if (pr == NULL || pr->sgn == NULL || pr->pKey == NULL)
+        return 0;
+    int res;
+    char* verif = decrypt(pr->sgn->content, pr->sgn->size, 
+        pr->pKey->val, pr->pKey->n);
+    
+    res = strcmp(verif, pr->mess);
+    if (res) {
+        printf("!! %s (recalc from sgn)\n!! %s (original mess)\n",verif,pr->mess);
+        printf("Info on sgn:\n");
+        printf("Size : %d\n",pr->sgn->size);
+        printf("Content : ");
+        for (int i = 0; i < pr->sgn->size; i++) {
+            printf("%lx ", pr->sgn->content[i]);
+        }
+        printf("\n");
+    }
+    free(verif);
+    return !res;
+}
+
+//Output format: pKey msg signature
+char* protected_to_str(Protected* pr) {
+    char* str = (char*)malloc(sizeof(char)*500);
+    if (str == NULL) {
+        fprintf(stderr,"Fatal Error: protected_to_str(pr)\n");
+        exit(-1);
+    }
+    str[0] = '\0';
+    if (pr == NULL || pr->sgn == NULL || pr->pKey == NULL || pr->mess == NULL)
+        return str;
+
+    char* key = key_to_str(pr->pKey);
+    char* sign = signature_to_str(pr->sgn);
+
+    sprintf(str,"%s %s %s",key,pr->mess,sign);
+
+    free(key);
+    free(sign);
+    return str;
+}
+
+//Input format: pKey msg signature
+Protected* str_to_protected(char* str) {
+    Protected* pr = (Protected*)malloc(sizeof(Protected));
+    if (str == NULL) {
+        fprintf(stderr,"Fatal Error: str_to_protected(str)\n");
+        exit(-1);
+    }
+
+    char pt[3][300];
+    int index = 0, i;
+    int n = strlen(str);
+
+    //splitting into 3 parts
+    for (int q = 0; q < 3; q++) {
+        for (i = 0; index <  n && str[index] != ' '; i++, index++) {
+            pt[q][i] = str[index];
+        }
+        index++;
+        pt[q][i] = '\0';
+    }
+
+    pr->pKey = str_to_key(pt[0]);
+    pr->mess = strdup(pt[1]);
+    pr->sgn = str_to_signature(pt[2]);
+
+    return pr;
+}

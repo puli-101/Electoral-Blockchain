@@ -5,12 +5,12 @@
  * et la cle secrete skey = (u, n), a partir des nombres premiers 
  * p et q, en suivant le protocole RSA
 */
-void generate_key_values(long p, long q, long* n, long *s, long *u) {
+void generate_key_values(ul p, ul q, ul* n, ul *s, ul *u) {
     *n = p*q;
-    long t = (p-1)*(q-1);
-    long new_s = 3;
-    long filler;
-    long pgcd = extended_gcd(new_s,t,u,&filler);
+    ul t = (p-1)*(q-1);
+    ul new_s = 3;
+    ul filler;
+    ul pgcd = extended_gcd(new_s,t,u,&filler);
 
     //if new_s isnt invertible mod t then we try another random num
     while (pgcd != 1) {
@@ -24,11 +24,11 @@ void generate_key_values(long p, long q, long* n, long *s, long *u) {
 /* 
  * Encrypts the string chaine with the public key (s,n) 
  * The function converts each character into an int 
- * Returns a long array obtained by encrypting each character
+ * Returns a ul array obtained by encrypting each character
 */
-long* encrypt(char* chaine, long s, long n) {
+ul* encrypt(char* chaine, ul s, ul n) {
     int size = strlen(chaine);
-    long* tab = (long*)malloc(sizeof(long) * size);
+    ul* tab = (ul*)malloc(sizeof(ul) * size);
     if (tab == NULL) {
         fprintf(stderr,"Fatal Error: malloc encrypt(%s,%ld,%ld)\n",chaine,s,n);
         exit(-1);
@@ -36,6 +36,7 @@ long* encrypt(char* chaine, long s, long n) {
 
     for (int i = 0; i < size; i++) {
         tab[i] = modpow(chaine[i],s,n);
+        //printf("!%lx",tab[i]);
     }
     
     return tab;
@@ -46,7 +47,7 @@ long* encrypt(char* chaine, long s, long n) {
  * of the integer array
  * This function returns a string corresponding to the original message
 */
-char* decrypt(long* crypted, int size, long u, long n) {
+char* decrypt(ul* crypted, int size, ul u, ul n) {
     char* str = (char*)malloc(sizeof(char)*(size+1));
     if (str == NULL) {
         fprintf(stderr,"Fatal Error: malloc decrypt(crypted,size,u,n)\n");
@@ -61,20 +62,20 @@ char* decrypt(long* crypted, int size, long u, long n) {
 }
 
 /* Initializes an already malloced */
-void init_key(Key* key, long val, long n) {
+void init_key(Key* key, ul val, ul n) {
     key->val = val;
     key->n = n;
 }
 
 /* Initializes an already malloced pk and sk*/
-void init_pair_keys(Key* pKey, Key* sKey, long low_size, long up_size) {
-    long p = random_prime_number(low_size, up_size, 100) ;
-    long q = random_prime_number(low_size, up_size, 100) ;
+void init_pair_keys(Key* pKey, Key* sKey, ul low_size, ul up_size) {
+    ul p = random_prime_number(low_size, up_size, 100) ;
+    ul q = random_prime_number(low_size, up_size, 100) ;
     while (p == q) {
         q = random_prime_number(low_size, up_size, 100) ;
     }
 
-    long n, s, u;
+    ul n, s, u;
     generate_key_values(p, q, &n, &s, &u);
 
     pKey->val = s;
@@ -99,7 +100,7 @@ char* key_to_str(Key* key) {
 /*translates a string with the format (x,y) in hexadecimal into a Key*/
 Key* str_to_key(char* str) {
     Key* k = (Key*)malloc(sizeof(Key));
-    unsigned long val,n; 
+    ul val,n; 
     if (k == NULL) {
         fprintf(stderr,"Fatal Error: str_to_key(%s)\n",str);
         exit(-1);

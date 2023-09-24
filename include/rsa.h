@@ -6,8 +6,8 @@
 #include <stdio.h>
 
 typedef struct {
-    unsigned long val;
-    unsigned long n;
+    ul val;
+    ul n;
 } Key;
 
 /*
@@ -15,27 +15,27 @@ typedef struct {
  * et la cle secrete skey = (u, n), a partir des nombres premiers 
  * p et q, en suivant le protocole RSA
 */
-void generate_key_values(long p, long q, long* n, long *s, long *u); 
+void generate_key_values(ul p, ul q, ul* n, ul *s, ul *u); 
 
 /* 
  * Encrypts the string chaine with the public key (s,n) 
  * The function converts each character into an int 
- * Returns a long array obtained by encrypting each character
+ * Returns a ul array obtained by encrypting each character
 */
-long* encrypt(char* chaine, long s, long n);
+ul* encrypt(char* chaine, ul s, ul n);
 
 /* 
  * Decrypts a message using the secret key (u,n), knowing beforehand the size
  * of the integer array
  * This function returns a string corresponding to the original message
 */
-char* decrypt(long* crypted, int size, long u, long n);
+char* decrypt(ul* crypted, int size, ul u, ul n);
 
 /* Initializes an already malloced */
-void init_key(Key* key, long val, long n);
+void init_key(Key* key, ul val, ul n);
 
 /* Initializes an already malloced pk and sk*/
-void init_pair_keys(Key* pKey, Key* sKey, long low_size, long up_size);
+void init_pair_keys(Key* pKey, Key* sKey, ul low_size, ul up_size);
 
 /*translates a Key type to a string with the format (x,y) ; x,y in hexadecimal*/
 char* key_to_str(Key* key);

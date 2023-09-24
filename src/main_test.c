@@ -3,7 +3,7 @@
 #include "rsa.h"
 #include "vote_handler.h"
 
-void print_long_vector (long* result, int size) {
+void print_long_vector (unsigned long* result, int size) {
     printf ("Vector: [ ") ;
         for ( int i = 0; i < size ; i++) {
         printf ("%lx \t " , result [ i ]) ;

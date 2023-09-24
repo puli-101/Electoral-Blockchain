@@ -1,8 +1,8 @@
 #include "arithmetics.h"
 
 /* Naive implementation in O(sqrt(n))*/
-int is_sprime_naive(long p) {
-    for (long i = 2; i < sqrt(p) + 1; i++) {
+int is_sprime_naive(ul p) {
+    for (ul i = 2; i < sqrt(p) + 1; i++) {
         if (p%i == 0)
             return 0;
     }
@@ -10,8 +10,8 @@ int is_sprime_naive(long p) {
 }
 
 /* Naive implementation of modular exponentiation*/
-long modpow_naive(long a, long m, long n) {
-    long res = 1;
+ul modpow_naive(ul a, ul m, ul n) {
+    ul res = 1;
     for (int i = 0; i < m; i++) {
         res *= a;
         res %= n;
@@ -20,9 +20,9 @@ long modpow_naive(long a, long m, long n) {
 }
 
 /* Fast exponentiation in O(log2(m)) */
-int modpow(long a, long m, long n) {
-    long b;
-    long r;
+ul modpow(ul a, ul m, ul n) {
+    ul b;
+    ul r;
 
     if (m == 0) {
         r = 1;
@@ -36,12 +36,12 @@ int modpow(long a, long m, long n) {
 }
 
 /* este si a est un temoin de Miller pour p, pour un entier a donne. */
-int witness (long a, long b, long d, long p) {
-    long x = modpow (a, d, p) ;
+int witness (ul a, ul b, ul d, ul p) {
+    ul x = modpow (a, d, p) ;
     if (x == 1) {
         return 0;
     }
-    for ( long i = 0; i < b ; i++) {
+    for ( ul i = 0; i < b ; i++) {
         if (x == p-1) {
             return 0;
         }
@@ -51,12 +51,12 @@ int witness (long a, long b, long d, long p) {
 }
 
 /*generation of random number*/
-long rand_long (long low, long up) {
+ul rand_long (ul low, ul up) {
     return rand() % (up - low +1) + low ;
 }
 
 /*Miller Rabin primality test*/
-int is_prime_miller (long p , int k) {
+int is_prime_miller (ul p , int k) {
     if ( p == 2) {
         return 1;
     }
@@ -64,14 +64,14 @@ int is_prime_miller (long p , int k) {
         return 0;
     }
     //on determine b et d :
-    long b = 0;
-    long d = p - 1;
+    ul b = 0;
+    ul d = p - 1;
     while (!( d & 1) ) { //tant que d n’est pas impair
         d = d /2;
         b = b +1;
     }
     // On genere k valeurs pour a, et on teste si c’est un temoin :
-    long a ;
+    ul a ;
     int i ;
     for ( i = 0; i < k ; i ++) {
         a = rand_long (2 , p -1) ;
@@ -88,10 +88,10 @@ int is_prime_miller (long p , int k) {
  * up_size: upper bitsize bound for expected prime (at most 7)
  * k: number of miller rabin tests
 */
-long random_prime_number(int low_size, int up_size, int k) {
-    long n;
-    long low = 1 << low_size;
-    long up = 1 << up_size;
+ul random_prime_number(int low_size, int up_size, int k) {
+    ul n;
+    ul low = 1 << low_size;
+    ul up = 1 << up_size;
     do {
         n = rand_long(low, up);
     } while(!is_prime_miller(n,k));
@@ -99,14 +99,14 @@ long random_prime_number(int low_size, int up_size, int k) {
 }
 
 /* Euclid's gcd, returns gcd between s and t and (u,v) Bezout's coefficients */
-long extended_gcd(long s, long t, long* u, long* v) {
+ul extended_gcd(ul s, ul t, ul* u, ul* v) {
     if (s == 0) {
         *u = 0;
         *v = 1;
         return t ;
     }
-    long uPrim , vPrim ;
-    long gcd = extended_gcd (t %s , s , & uPrim , & vPrim ) ;
+    ul uPrim , vPrim ;
+    ul gcd = extended_gcd (t %s , s , & uPrim , & vPrim ) ;
     *u = vPrim -( t / s ) * uPrim ;
     *v = uPrim ;
     return gcd ;
