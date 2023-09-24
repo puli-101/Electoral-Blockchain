@@ -77,7 +77,9 @@ Signature* str_to_signature(char* str) {
         }
     }
     content = realloc ( content , num * sizeof ( long ) ) ;
-    return init_signature ( content , num ) ;
+    Signature* sgn = init_signature ( content , num );
+    free(content);
+    return sgn;
 }
 
 /* Initializes a Protected type */
