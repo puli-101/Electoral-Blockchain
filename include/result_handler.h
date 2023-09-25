@@ -49,4 +49,16 @@ HashTable* create_hashtable(CellKey* keys, int size);
 */
 void delete_hashtable(HashTable* t);
 
+/* 
+ * decl: list of declarations with valid signatures
+ * candidates: list of candidates' keys
+ * voters: list of approved citizens' keys
+ * sizeC: size of hashtable containing the vote count for each candidate
+ * sizeV: size of hashtable representing the amount of times each voter has voted
+ * Returns: pk of the candidate with the most votes
+ * since collisions are solved by probing, 
+ *  we supposes that sizeC and sizeV are larger than the amount of citizens
+ */
+Key* compute_winner(CellProtected* decl, CellKey* candidates, CellKey* voters, int sizeC, int sizeV);
+
 #endif

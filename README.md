@@ -35,7 +35,7 @@ Furthermore, in our context, a vote declaration simply involves transmitting the
 
 ### Centralized Declarations DB
 
-In this section, we consider a centralized voting system in which all vote declarations are sent to the voting system. The role of the voting system is to collect all votes and announce the election winner to all citizens. In practice, vote declarations are recorded in a file called "declarations.txt" as they arrive, and once the election is closed, this data is loaded into a linked list. To verify the integrity of the data and count the votes, the system must also retrieve the set of public keys of citizens and candidates, which are stored in files called "keys.txt" and "candidates.txt," respectively.
+For a first implementation, in this section, we consider a centralized voting system in which all vote declarations are sent to the voting system. The role of the voting system is to collect all votes and announce the election winner to all citizens. In practice, vote declarations are recorded in a file called "declarations.txt" as they arrive, and once the election is closed, this data is loaded into a linked list. To verify the integrity of the data and count the votes, the system must also retrieve the set of public keys of citizens and candidates, which are stored in files called "keys.txt" and "candidates.txt," respectively.
 
 Limitations: it is supposed that the set of candidats is already known
 
