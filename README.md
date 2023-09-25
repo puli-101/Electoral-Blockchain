@@ -33,7 +33,7 @@ Furthermore, in our context, a vote declaration simply involves transmitting the
 
 - The voter can then publish a secure declaration, consisting of their message "mess," the associated signature, and their public key. In this way, anyone wishing to verify the authenticity of the declaration can do so by decrypting the signature with voter E's public key: the result obtained should exactly match the message "mess."
 
-### Centralised Declarations DB
+### Centralized Declarations DB
 
 In this section, we consider a centralized voting system in which all vote declarations are sent to the voting system. The role of the voting system is to collect all votes and announce the election winner to all citizens. In practice, vote declarations are recorded in a file called "declarations.txt" as they arrive, and once the election is closed, this data is loaded into a linked list. To verify the integrity of the data and count the votes, the system must also retrieve the set of public keys of citizens and candidates, which are stored in files called "keys.txt" and "candidates.txt," respectively.
 
