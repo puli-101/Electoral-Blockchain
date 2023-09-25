@@ -1,13 +1,49 @@
-pKey : 2887 , 380f 
-sKey : 7b7 , 380f 
-key to str : (2887,380f) 
-str to key : 2887 , 380f 
-(2887,380f) vote pour (303,80b) 
-signature : Vector: [ 1877 	 1980 	 2cbd 	 1980 	 1460 	 1487 	 2cbd 	 244 	 139e 	  ] 
-signature to str : #1877#1980#2cbd#1980#1460#1487#2cbd#244#139e# 
-str to signature : Vector: [ 1877 	 1980 	 2cbd 	 1980 	 1460 	 1487 	 2cbd 	 244 	 139e 	  ] 
-signature decrypted : (303,80b)
-Vector: [ 1877 	 1980 	 2cbd 	 1980 	 1460 	 1487 	 2cbd 	 244 	 139e 	  ] 
-Signature valide 
-protected to str : (2887,380f) (303,80b) #1877#1980#2cbd#1980#1460#1487#2cbd#244#139e# 
-str to protected : (2887,380f) (303,80b) #1877#1980#2cbd#1980#1460#1487#2cbd#244#139e# 
+(89,485)|(bf9,22df)|(1483,292d)|(23f,104b)|(64f,73d)|
+- Declarations:
+(3ef,9e9) (89a,485) #56e#514#88e#93e#4f7#514#9a0#31b#
+(89,485) (23f,104b) #2d9#bd#1e0#44b#ae#310#391#34#38c#1a6#
+(64f,73d) (bf9,22df) #696#48#5a5#6b8#182#3b7#3b7#503#5a5#3ac#
+(bf9,22df) (89,485) #1972#211d#b07#1409#2cf#211d#ae9#11dc#
+(5b9,14ad) (bf9,22df) #13b9#f19#7ce#6db#558#e52#e52#23b#7ce#8c5#
+(11,6b5) (89a,485) #479#247#8e#68c#5fb#247#4b9#1d2#
+(b4d,1e3b) (89,485) #958#d6c#16f4#d28#1c24#d6c#16c5#1801#
+(1483,292d) (bf9,22df) #167b#e38#c4e#f64#7bb#28e0#28e0#2814#c4e#1468#
+(23f,104b) (23f,104b) #c31#631#843#e2c#1da#2a9#fe8#8d3#9db#3b0#
+(65,81d) (23f,104b) #7af#55e#70d#63b#386#1ce#7b7#351#817#529#
+(517,1c87) (bfa,22df) #8ff#1f5#ee4#1a2e#41d#6be#6be#1c05#ee4#5cd#
+(d2d,21a3) (bf9,22df) #4a5#1bbf#1af0#cee#1863#471#471#cea#1af0#ba8#
+(121,1055) (64f,73d) #28#9c0#103f#c65#2c#fd3#3d0#acc#e78#
+(74f,a8d) (89,485) #503#81a#825#76f#71a#81a#560#87e#
+(305,1295) (64fa,73d) #a75#1f6#276#1263#ddb#c60#d79#717#902#
+!! (89,485) (recalc from sgn)
+!! (89a,485) (original mess)
+Info on sgn:
+Size : 8
+Content : 56e 514 88e 93e 4f7 514 9a0 31b 
+!! (89,485) (recalc from sgn)
+!! (89a,485) (original mess)
+Info on sgn:
+Size : 8
+Content : 479 247 8e 68c 5fb 247 4b9 1d2 
+!! (bf9,22df) (recalc from sgn)
+!! (bfa,22df) (original mess)
+Info on sgn:
+Size : 10
+Content : 8ff 1f5 ee4 1a2e 41d 6be 6be 1c05 ee4 5cd 
+!! (64f,73d) (recalc from sgn)
+!! (64fa,73d) (original mess)
+Info on sgn:
+Size : 9
+Content : a75 1f6 276 1263 ddb c60 d79 717 902 
+- Declarations:
+(74f,a8d) (89,485) #503#81a#825#76f#71a#81a#560#87e#
+(121,1055) (64f,73d) #28#9c0#103f#c65#2c#fd3#3d0#acc#e78#
+(d2d,21a3) (bf9,22df) #4a5#1bbf#1af0#cee#1863#471#471#cea#1af0#ba8#
+(65,81d) (23f,104b) #7af#55e#70d#63b#386#1ce#7b7#351#817#529#
+(23f,104b) (23f,104b) #c31#631#843#e2c#1da#2a9#fe8#8d3#9db#3b0#
+(1483,292d) (bf9,22df) #167b#e38#c4e#f64#7bb#28e0#28e0#2814#c4e#1468#
+(b4d,1e3b) (89,485) #958#d6c#16f4#d28#1c24#d6c#16c5#1801#
+(5b9,14ad) (bf9,22df) #13b9#f19#7ce#6db#558#e52#e52#23b#7ce#8c5#
+(bf9,22df) (89,485) #1972#211d#b07#1409#2cf#211d#ae9#11dc#
+(64f,73d) (bf9,22df) #696#48#5a5#6b8#182#3b7#3b7#503#5a5#3ac#
+(89,485) (23f,104b) #2d9#bd#1e0#44b#ae#310#391#34#38c#1a6#

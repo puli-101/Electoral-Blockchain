@@ -31,7 +31,7 @@ ul* encrypt(char* chaine, ul s, ul n);
 */
 char* decrypt(ul* crypted, int size, ul u, ul n);
 
-/* Initializes an already malloced */
+/* Initializes an already malloced key */
 void init_key(Key* key, ul val, ul n);
 
 /* Initializes an already malloced pk and sk*/

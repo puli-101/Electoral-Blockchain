@@ -1,59 +1,52 @@
 #ifndef _RESULT_HANDLER_H_
 #define _RESULT_HANDLER_H_
 
-#include "vote_handler.h"
+#include "list.h"
 
-/* Results will first be saved as a linked list */
-typedef struct cellKey {
-    Key * data ;
-    struct cellKey * next ;
-} CellKey;
+typedef struct hashcell {
+    Key * key ;
+    int val ;
+} HashCell ;
 
-typedef struct cellProtected {
-    Protected * data ;
-    struct cellProtected * next ;
-} CellProtected;
+typedef struct hashtable {
+    HashCell ** tab ;
+    int size ;
+} HashTable ;
 
-/* Mallocs and initializes a linked list */
-CellKey* create_cell_key(Key* key);
+/* Removes all the declarations with invalid signatures */
+void filter_fraud(CellProtected** lst);
 
-/* Inserts element as head of the list */
-void insert_head_key(CellKey** lst, Key* key);
-
-/* 
- * Reads file keys.txt or candidates.txt 
- * returns a linked list of the public keys
-*/
-CellKey* read_public_keys(char *option);
-
-/* Prints a list of keys */
-void print_list_keys(CellKey* LCK);
-
-/* Deletes a single cell of a key linked list */
-void delete_cell_key(CellKey* c);
-
-/* Deletes a key linked list*/
-void delete_cell_keys(CellKey* c);
-
-/* Creates and initializes a cell of type protected*/
-CellProtected* create_cell_protected(Protected* pr);
-
-/* Inserts element as head of the list */
-void insert_head_protected(CellProtected** lst, Protected* key);
+/* Mallocs a hash cell */
+HashCell* create_hashcell(Key* key);
 
 /* 
- * Reads file declarations.txt
- * returns a linked list of the public keys
+ *Returns the position of the element with the key 'key'
+ * Size: size of the hash table 
 */
-CellProtected* read_protected();
+int hash_function(Key* key, int size);
 
-/* Prints a list of protecteds */
-void print_list_protected(CellProtected* LCK);
+/* 
+ * Returns the index where the key 'key' is located
+ * The hash table resolves conflicts using linear probing
+ * If the key doesn't exist yet it returns the first open position
+ */
+int find_position(HashTable* t, Key* key);
 
-/* Deletes a single cell of a protected linked list */
-void delete_cell_protected(CellProtected* c);
+/*
+ * Initializes a HashTable of size 'size' from a list of keys 
+*/
+HashTable* create_hashtable(CellKey* keys, int size);
 
-/* Deletes a protected linked list*/
-void delete_list_protected(CellProtected* c);
+/*
+ * frees HashTable
+ * -
+ * For each i 
+ * Free each key
+ * Free hashCell*
+ * -
+ * Free hashCell**
+ * Free HashTable*
+*/
+void delete_hashtable(HashTable* t);
 
 #endif
