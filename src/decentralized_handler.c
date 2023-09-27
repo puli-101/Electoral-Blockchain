@@ -27,7 +27,7 @@ unsigned char* hashstr_to_hash(char* str) {
 
 /* Converts a hash into a string */
 char* hash_to_str(unsigned char* hash) {
-    char* str = (char*)malloc(sizeof(char*)*(SHA256_DIGEST_LENGTH+1));
+    char* str = (char*)malloc(sizeof(char*)*(65));
     test_fatal_error(hash,"str_to_hash(str)");
     test_fatal_error(str,"str_to_hash(str)");
     str[0] = '\0';
@@ -39,7 +39,15 @@ char* hash_to_str(unsigned char* hash) {
     return str;
 }
 
-/* Writes block 'bl' into a file named 'name' */
+/* 
+ * Writes block 'bl' into a file named 'name'
+ * Format: 
+ * - Author
+ * - hash
+ * - previous hash
+ * - nonce
+ * - list of declarations
+*/
 void save_block_file(const char* name, Block* bl) {
     FILE *f = fopen(name, "w");
     test_fatal_error(f,"save_block_file(name,bl)");
@@ -50,7 +58,7 @@ void save_block_file(const char* name, Block* bl) {
     char* hash = hash_to_str(bl->hash);
     fprintf(f,"%s\n",hash);
     char* previous_hash = hash_to_str(bl->previous_hash);
-    fprintf(f,"%s\n",hash);
+    fprintf(f,"%s\n",previous_hash);
     //proof of work
     fprintf(f,"%d\n",bl->nonce);
     //list of declarations
@@ -65,7 +73,15 @@ void save_block_file(const char* name, Block* bl) {
     fclose(f);
 }
 
-/* Reads a block from a file named 'name' */
+/* 
+ * Reads a block from a file named 'name'
+ * Format: 
+ * - Author
+ * - hash
+ * - previous hash
+ * - nonce
+ * - list of declarations
+*/
 Block* read_block_file(const char* name) {
     Block* bl = (Block*)malloc(sizeof(Block));
     test_fatal_error(bl,"read_block_file(name)");
@@ -96,9 +112,9 @@ Block* read_block_file(const char* name) {
     return bl;
 }
 
-/* Similar to save block file */
+/* Similar to save block file except it doesnt include current hash */
 char* block_to_str(Block* bl) {
-    char* str = (char*)malloc(sizeof(char)*1000);
+    char* str = (char*)malloc(sizeof(char)*1500);
     test_fatal_error(str,"block_to_str(bl)");
     test_fatal_error(bl,"save_block_file(name,bl)");
     str[0] = '\0';
@@ -106,10 +122,6 @@ char* block_to_str(Block* bl) {
     //pkey author
     char* str_key = key_to_str(bl->author);
     strcat(str,str_key);
-    strcat(str,"\n");
-    //hash
-    char* str_hash = hash_to_str(bl->hash);
-    strcat(str,str_hash);
     strcat(str,"\n");
     //previous hash
     char* str_prev_hash = hash_to_str(bl->previous_hash);
@@ -126,7 +138,6 @@ char* block_to_str(Block* bl) {
         strcat(str,"\n");
         free(str_pr);
     }
-    free(str_hash);
     free(str_prev_hash);
     free(str_key);
     return str;
@@ -138,7 +149,12 @@ char* block_to_str(Block* bl) {
 */
 unsigned char* str_to_hash(char* str) {
     test_fatal_error(str,"str_to_hash(str)");
-    return SHA256((unsigned char*)str, strlen(str),0);
+    //replace SHA256 (it takes too much space in DATA segment while doing proof of work)
+    unsigned char* s_hash = SHA256((unsigned char*)str, strlen(str),0);
+    unsigned char* d_hash = (unsigned char*)malloc(sizeof(unsigned char*)*SHA256_DIGEST_LENGTH);
+    for (int i = 0; i < SHA256_DIGEST_LENGTH; i++)
+        d_hash[i] = s_hash[i];
+    return d_hash;
 }
 
 /* 
@@ -149,7 +165,7 @@ void compute_proof_of_work(Block *B, int d) {
     B->nonce = 0;
     int valid = 0;
     do {
-        //we calc the hash of the block
+        //we calc the hash of the block (very slow)
         char* str = block_to_str(B);
         unsigned char* hash = str_to_hash(str);
         char* str_hash = hash_to_str(hash);
@@ -160,9 +176,13 @@ void compute_proof_of_work(Block *B, int d) {
                 valid = 0;
             }
         }
-        if (!valid)
+        if (!valid) {
             (B->nonce)++;
-        free(hash);
+            free(hash);
+        } else {
+            free(B->hash);
+            B->hash = hash;
+        }
         free(str);
         free(str_hash);
     } while(!valid && ((B->nonce) > 0)); //prevent overflow
@@ -198,5 +218,14 @@ void delete_block(Block* b) {
         free(b->votes);
         b->votes = tmp;
     }
+    free(b);
+}
+
+/* Frees a block b and all of its fields*/
+void destroy_block(Block* b) {
+    free(b->hash);
+    free(b->previous_hash);
+    free(b->author);
+    delete_list_protected(b->votes);
     free(b);
 }

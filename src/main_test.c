@@ -13,82 +13,39 @@ void print_long_vector (unsigned long* result, int size) {
     printf ( " ] \n" ) ;
 }
 
-int main ( void ) {
+int main (int argc, char** argv) {
+    char* str1, *str2;
+    int nv = 15, nc = 5;
+    int POW = 3;
 
-    srand ( time ( NULL ) ) ;
+    if (argc == 3) {
+        nv = atoi(argv[1]);
+        nc = atoi(argv[2]);
+    } 
+    if (argc >= 4) {
+        POW = atoi(argv[3]);
+    }
 
-    //Testing Init Keys
-    Key * pKey = malloc ( sizeof ( Key ) ) ;
-    Key * sKey = malloc ( sizeof ( Key ) ) ;
-    init_pair_keys ( pKey , sKey ,3 ,7) ;
-    printf ( "pKey : %lx , %lx \n" , pKey -> val , pKey -> n ) ;
-    printf ( "sKey : %lx , %lx \n" , sKey -> val , sKey -> n ) ;
+    generate_random_data(nv,nc);
+    Block* b = read_block_file("tests/block1.txt");
 
-    //Testing Key Serialization
-    char * chaine = key_to_str ( pKey ) ;
-    printf ("key to str : %s \n" , chaine ) ;
-    Key * k = str_to_key ( chaine ) ;
-    printf ( "str to key : %lx , %lx \n" , k -> val , k -> n ) ;
-
-    //Testing signature
-    //Candidate keys:
-    Key * pKeyC = malloc ( sizeof ( Key ) ) ;
-    Key * sKeyC = malloc ( sizeof ( Key ) ) ;
-    init_pair_keys ( pKeyC , sKeyC ,3 ,7) ;
-    //Declaration:
-    char * mess = key_to_str ( pKeyC ) ;
-    printf ( "%s vote pour %s \n" , key_to_str ( pKey ) , mess ) ;
-    Signature * sgn = sign ( mess , sKey ) ;
-    printf ( "signature : " ) ;
-    print_long_vector ( sgn -> content , sgn -> size ) ;
-    chaine = signature_to_str ( sgn ) ;
-    printf ( "signature to str : %s \n" , chaine ) ;
-    sgn = str_to_signature ( chaine ) ;
-    printf ( "str to signature : " ) ;
-    print_long_vector ( sgn -> content , sgn -> size ) ;
+    str1 = block_to_str(b);
+    printf("Block1: \n%s\n",str1);
 
     
-    printf("signature decrypted : %s\n", decrypt(sgn->content, sgn->size, pKey->val, pKey->n));
-    print_long_vector ( encrypt(mess,sKey->val, sKey->n) , strlen(mess)) ;
 
-    //Testing protected:
-    Protected * pr = init_protected ( pKey , mess , sgn ) ;
-    //Verification:
-    if ( verify ( pr ) ) {
-        printf ( "Signature valide \n" ) ;
-    } else {
-        printf ( "Signature non valide \n" ) ;
-    }
-    chaine = protected_to_str ( pr ) ;
-    printf ("protected to str : %s \n" , chaine ) ;
-    pr = str_to_protected ( chaine ) ;
-    printf ( "str to protected : %s %s %s \n" , key_to_str ( pr -> pKey ) ,pr -> mess , signature_to_str ( pr -> sgn ) ) ;
-
-    free ( pKey ) ;
-    free ( sKey ) ;
-    free ( pKeyC ) ;
-    free ( sKeyC ) ;
-
-    generate_random_data(15,5);
-
-    const char * s = "Rosetta code" ;
-    unsigned char * d = SHA256 ((unsigned char*)s , strlen ( s ) , 0) ;
-    int i ;
-    for ( i = 0; i < SHA256_DIGEST_LENGTH ; i ++)
-        printf ("%02x" , d [ i ]) ;
-    putchar ( '\n') ;
-    char* str1 = hash_to_str(d);
-    printf("%s\n",str1);
-    unsigned char* hash2 = hashstr_to_hash(str1);
-    char* str2 = hash_to_str(hash2);
-    if (strcmp(str1,str2) != 0) {
-        printf("str1: %s\nstr2: %s\n",str1,str2);
+    compute_proof_of_work(b, POW);
+    str2 = block_to_str(b);
+    printf("After pow: \n%s\n",str2);
+    if (!verify_block(b,POW)) {
+        printf("ERROR: invalid proof of work\n");
     } else {
         printf("OK\n");
     }
-    //free(d);
-    free(str1);
+    save_block_file("tests/block2.txt",b);
     free(str2);
-    free(hash2);
+    free(str1);
+    destroy_block(b);
+
     return 0;
 }

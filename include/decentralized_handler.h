@@ -32,7 +32,7 @@ unsigned char* str_to_hash(char* str);
 char* hash_to_str(unsigned char* hash);
 
 /* 
- * String (char*) str containing an already calculated hash to hash (unsigned char*)
+ * char* str containing an already calculated hash to hash (unsigned char*)
  * Each hash has 32 groups of 2 digit hexadec numbers
  * strlen(str) = 32
 */
@@ -46,5 +46,8 @@ void delete_block(Block* b);
 
 /* Checks if the hash of the block b starts with d zeroes */
 int verify_block(Block* b, int d);
+
+/* Frees a block b and all of its fields*/
+void destroy_block(Block* b);
 
 #endif
