@@ -167,3 +167,36 @@ void compute_proof_of_work(Block *B, int d) {
         free(str_hash);
     } while(!valid && ((B->nonce) > 0)); //prevent overflow
 }
+
+/* Checks if the hash of the block b starts with d zeroes */
+int verify_block(Block* b, int d) {
+    //we calc the hash of the block
+    char* str = block_to_str(b);
+    unsigned char* hash = str_to_hash(str);
+    char* str_hash = hash_to_str(hash);
+    int valid = 1;
+    //check if we match a prefix of d zeroes
+    for (int i = 0; i < d; i++) {
+        if (str_hash[i] != '0') {
+            valid = 0;
+        }
+    }
+    free(hash);
+    free(str);
+    free(str_hash);
+    return valid;
+}
+
+/* Frees a block b */
+void delete_block(Block* b) {
+    //DO NOT FREE author NOR data FIELD OF EACH CELLPROTECTED* VOTES
+    free(b->hash);
+    free(b->previous_hash);
+    CellProtected* tmp;
+    while(b->votes != NULL) {
+        tmp = b->votes->next;
+        free(b->votes);
+        b->votes = tmp;
+    }
+    free(b);
+}

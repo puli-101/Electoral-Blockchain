@@ -41,4 +41,10 @@ unsigned char* hashstr_to_hash(char* str);
 /* Brute force proof of work algorithm, the hash of the block B has to begin by d 0's*/
 void compute_proof_of_work(Block *B, int d);
 
+/* Frees a block b */
+void delete_block(Block* b);
+
+/* Checks if the hash of the block b starts with d zeroes */
+int verify_block(Block* b, int d);
+
 #endif
