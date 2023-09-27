@@ -82,7 +82,7 @@ Signature* str_to_signature(char* str) {
     return sgn;
 }
 
-/* Initializes a Protected type */
+/* Initializes a Protected type, makes a copy of each argument */
 Protected* init_protected(Key* pKey, char* mess, Signature* sgn) {
     Protected* prot = (Protected*)malloc(sizeof(Protected));
     if (prot == NULL) {

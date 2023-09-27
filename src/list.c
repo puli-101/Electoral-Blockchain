@@ -1,5 +1,13 @@
 #include "list.h"
 
+/* Checks if obj was alloced properly */
+void test_fatal_error(void* obj, char* msg) {
+    if (obj == NULL) {
+        fprintf(stderr,"Fatal Error: %s\n",msg);
+        exit(-1);
+    }
+}
+
 /* Mallocs and initializes a linked list */
 CellKey* create_cell_key(Key* key) {
     CellKey* cell = (CellKey*)malloc(sizeof(CellKey));

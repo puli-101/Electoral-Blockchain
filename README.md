@@ -65,6 +65,9 @@ To set up the election, it is necessary to first generate a unique electoral car
 In the context of this project, we will simulate this voting process using three files: one containing the keys of all citizens, one indicating the candidates, and one containing signed declarations.
 
 ## Execution
+It is required to install
+
+    sudo apt-get install libssl-dev
 
 After compiling (make), one simply has to run the following command: ./bin/main <nv> <nc>.
 Where <nv> represents the number of citizens, and <nc> the number of candidates.

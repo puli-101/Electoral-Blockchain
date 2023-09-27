@@ -57,4 +57,7 @@ void delete_cell_protected(CellProtected* c);
 /* Deletes a protected linked list*/
 void delete_list_protected(CellProtected* c);
 
+/* Checks if obj was alloced properly */
+void test_fatal_error(void* obj, char* msg);
+
 #endif

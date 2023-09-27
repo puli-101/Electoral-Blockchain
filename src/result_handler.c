@@ -1,12 +1,5 @@
 #include "result_handler.h"
 
-void test_fatal_error(void* obj, char* msg) {
-    if (obj == NULL) {
-        fprintf(stderr,"Fatal Error: %s\n",msg);
-        exit(-1);
-    }
-}
-
 /* Removes all the declarations with invalid signatures */
 //needs optimization
 void filter_fraud(CellProtected** lst) {

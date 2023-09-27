@@ -3,6 +3,7 @@
 #include "rsa.h"
 #include "vote_handler.h"
 #include "simulation.h"
+#include "decentralized_handler.h"
 
 void print_long_vector (unsigned long* result, int size) {
     printf ("Vector: [ ") ;
@@ -69,5 +70,13 @@ int main ( void ) {
     free ( sKeyC ) ;
 
     generate_random_data(15,5);
+
+    const char * s = "Rosetta code" ;
+    unsigned char * d = SHA256 ((unsigned char*)s , strlen ( s ) , 0) ;
+    int i ;
+    for ( i = 0; i < SHA256_DIGEST_LENGTH ; i ++)
+        printf ("%02x" , d [ i ]) ;
+    putchar ( '\n') ;
+    printf("- %s\n",d);
     return 0;
 }
