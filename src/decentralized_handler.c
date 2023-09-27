@@ -17,6 +17,7 @@ unsigned char* hashstr_to_hash(char* str) {
         buffer[0] = str[i];
         buffer[1] = str[i+1];
         buffer[2] = '\0';
+        //translates the characters into a base16 number
         hash[j] = strtol(buffer, NULL, 16); 
         j++;
     }
@@ -24,10 +25,12 @@ unsigned char* hashstr_to_hash(char* str) {
     return hash;
 }
 
+/* Converts a hash into a string */
 char* hash_to_str(unsigned char* hash) {
     char* str = (char*)malloc(sizeof(char*)*(SHA256_DIGEST_LENGTH+1));
     test_fatal_error(hash,"str_to_hash(str)");
     test_fatal_error(str,"str_to_hash(str)");
+    str[0] = '\0';
     char buffer[5];
     for (int i = 0; i < SHA256_DIGEST_LENGTH ; i++) {
         sprintf(buffer,"%02x" , hash[i]);
@@ -72,14 +75,14 @@ Block* read_block_file(const char* name) {
     //pkey author
     fgets(buffer, 500, f);
     bl->author = str_to_key(buffer);
-    fgets(buffer, 500, f);
     //hash
+    fgets(buffer, 500, f);
     bl->hash = hashstr_to_hash(buffer);
-    fgets(buffer, 500, f);
     //previous hash
-    bl->previous_hash = hashstr_to_hash(buffer);
     fgets(buffer, 500, f);
+    bl->previous_hash = hashstr_to_hash(buffer);
     //proof of work
+    fgets(buffer, 500, f);
     bl->nonce = atoi(buffer);
     //list of declarations
     bl->votes = NULL;
@@ -138,3 +141,29 @@ unsigned char* str_to_hash(char* str) {
     return SHA256((unsigned char*)str, strlen(str),0);
 }
 
+/* 
+ * Brute force proof of work algorithm, the hash of the block B has to begin by d 0's
+ * (or 4d zeroes in the binary representation since the hash is in hexadecimal)
+*/
+void compute_proof_of_work(Block *B, int d) {
+    B->nonce = 0;
+    int valid = 0;
+    do {
+        //we calc the hash of the block
+        char* str = block_to_str(B);
+        unsigned char* hash = str_to_hash(str);
+        char* str_hash = hash_to_str(hash);
+        valid = 1;
+        //check if we match a prefix of d zeroes
+        for (int i = 0; i < d; i++) {
+            if (str_hash[i] != '0') {
+                valid = 0;
+            }
+        }
+        if (!valid)
+            (B->nonce)++;
+        free(hash);
+        free(str);
+        free(str_hash);
+    } while(!valid && ((B->nonce) > 0)); //prevent overflow
+}

@@ -22,4 +22,23 @@ Block* read_block_file(const char* name);
 /* Similar to save block file */
 char* block_to_str(Block* bl);
 
+/* 
+ * Calculates the hash value of a string hash 
+ * and saves it into a new (unsigned char*) tab
+*/
+unsigned char* str_to_hash(char* str);
+
+/* Converts a hash into a string */
+char* hash_to_str(unsigned char* hash);
+
+/* 
+ * String (char*) str containing an already calculated hash to hash (unsigned char*)
+ * Each hash has 32 groups of 2 digit hexadec numbers
+ * strlen(str) = 32
+*/
+unsigned char* hashstr_to_hash(char* str);
+
+/* Brute force proof of work algorithm, the hash of the block B has to begin by d 0's*/
+void compute_proof_of_work(Block *B, int d);
+
 #endif

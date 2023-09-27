@@ -77,6 +77,18 @@ int main ( void ) {
     for ( i = 0; i < SHA256_DIGEST_LENGTH ; i ++)
         printf ("%02x" , d [ i ]) ;
     putchar ( '\n') ;
-    printf("- %s\n",d);
+    char* str1 = hash_to_str(d);
+    printf("%s\n",str1);
+    unsigned char* hash2 = hashstr_to_hash(str1);
+    char* str2 = hash_to_str(hash2);
+    if (strcmp(str1,str2) != 0) {
+        printf("str1: %s\nstr2: %s\n",str1,str2);
+    } else {
+        printf("OK\n");
+    }
+    //free(d);
+    free(str1);
+    free(str2);
+    free(hash2);
     return 0;
 }
