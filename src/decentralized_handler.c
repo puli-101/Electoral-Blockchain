@@ -229,3 +229,31 @@ void destroy_block(Block* b) {
     delete_list_protected(b->votes);
     free(b);
 }
+
+/*Creates a node of the blockchain tree (the block b isn't recopied)*/
+CellTree* create_node(Block* b) {
+    test_fatal_error(b, "create_node(b)");
+    CellTree* cell = (CellTree*)malloc(sizeof(CellTree));
+    test_fatal_error(cell, "create_node(b)");
+
+    cell->height = 0;
+    cell->father = NULL;
+    cell->firstChild = NULL;
+    cell->nextBro = NULL;
+    cell->block = b;
+
+    return cell;
+}
+
+/* 
+ * Updates the height of the father 
+ * Returns 1 if the father's height changes
+*/
+int update_height(CellTree* father, CellTree* child) {
+    if (child->height+1 > father->height) {
+        father->height = child->height + 1;
+        return 1;
+    } else {
+        return 0;
+    }
+}

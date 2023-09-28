@@ -13,6 +13,14 @@ typedef struct block {
     unsigned char * previous_hash ; //hash of prev block
 } Block ;
 
+typedef struct block_tree_cell {
+    Block * block ;
+    struct block_tree_cell * father ;
+    struct block_tree_cell * firstChild ;
+    struct block_tree_cell * nextBro ;
+    int height ;
+} CellTree ;
+
 /* Writes block 'bl' into a file named 'name' */
 void save_block_file(const char* name, Block* bl);
 
@@ -49,5 +57,14 @@ int verify_block(Block* b, int d);
 
 /* Frees a block b and all of its fields*/
 void destroy_block(Block* b);
+
+/*Creates a node of the blockchain tree (the block b isn't recopied)*/
+CellTree* create_node(Block* b);
+
+/* 
+ * Updates the height of the father 
+ * Returns 1 if the father's height changes
+*/
+int update_height(CellTree* father, CellTree* child);
 
 #endif
