@@ -67,4 +67,21 @@ CellTree* create_node(Block* b);
 */
 int update_height(CellTree* father, CellTree* child);
 
+/* Adds a child to the list of children for a certain father
+ * Updates the father's height and all the ascending family
+*/
+void add_child(CellTree* father, CellTree* child);
+
+/* Supprime un noeud de l'arbre */
+void delete_node(CellTree* node);
+
+/*
+ * Prints the tree ab
+ * for each node we print the current hash and height of the block
+*/
+void print_tree(CellTree* ab);
+
+/*Deletes a tree*/
+void delete_tree(CellTree* ab);
+
 #endif

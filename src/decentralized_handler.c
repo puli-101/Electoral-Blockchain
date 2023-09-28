@@ -257,3 +257,51 @@ int update_height(CellTree* father, CellTree* child) {
         return 0;
     }
 }
+
+/* Adds a child to the list of children for a certain father
+ * Updates the father's height and all the ascending family
+*/
+void add_child(CellTree* father, CellTree* child) {
+    if (father->firstChild == NULL) {
+        father->firstChild = child;
+        
+    } else {
+        CellTree* iter = father->firstChild;
+        while(iter->nextBro != NULL) {
+            iter = iter->nextBro;
+        }  
+        iter->nextBro = child;
+    }
+    CellTree* f1 = father, *c1 = child;
+    while(update_height(f1,c1)) {
+        c1 = f1;
+        f1 = f1->father;
+    }
+}
+
+/* Supprime un noeud de l'arbre */
+void delete_node(CellTree* node) {
+    delete_block(node->block); //destroy insted??
+    free(node);
+}
+
+/*
+ * Prints the tree ab
+ * for each node we print the current hash and height of the block
+*/
+void print_tree(CellTree* ab) {
+    print_tree(ab->nextBro);
+    char* str = hash_to_str(ab->block->hash);
+    printf("hash: %s\n",str);
+    printf("height: %d\n-\n",ab->height);
+    free(str);
+    print_tree(ab->firstChild);
+}
+
+/*Deletes a tree*/
+void delete_tree(CellTree* ab) {
+    if (ab == NULL) return;
+    delete_tree(ab->firstChild);
+    delete_tree(ab->nextBro);
+    delete_node(ab);
+}
