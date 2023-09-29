@@ -150,3 +150,17 @@ void delete_list_protected(CellProtected* c) {
     delete_list_protected(c->next);
     delete_cell_protected(c);
 }
+
+/*
+ *Concatenates l2 at the end of l1
+ * (much easier if CellProtected* was a double linked list)
+*/
+void fuse_declarations(CellProtected** l1, CellProtected* l2) {
+    if (*l1 = NULL) {
+        *l1 = l2;
+    } else {
+        CellProtected* iter;
+        for (iter = *l1; iter->next != NULL; iter = iter->next);
+        iter->next = l2;
+    }
+}

@@ -305,3 +305,36 @@ void delete_tree(CellTree* ab) {
     delete_tree(ab->nextBro);
     delete_node(ab);
 }
+
+/* Returns pointer of the child of the cell with the maximal height*/
+CellTree* highest_child(CellTree* cell) {
+    int max = -1;
+    CellTree* highest = NULL;
+    for (CellTree* iter = cell->firstChild;
+        iter; iter = iter->nextBro) {
+            if (iter->height > max) {
+                max = iter->height;
+                highest = iter;
+            }
+    }
+    return highest;
+}
+
+/*Returns the hash of the deepest block */
+CellTree* last_node(CellTree* cell) {
+    if (cell->firstChild == NULL) {
+        return cell->hash;
+    }
+    return last_node(highest_child(cell));
+}
+
+/*Returns the list of all the vote declarations linked to the longest branch*/
+CellProtected* list_decl_longest_branch(CellTree* tree) {
+    CellTree* depth = last_node(tree);
+    CellProtected* lst = NULL;
+    while(depth != NULL) {
+        fuse_declarations(lst, depth->votes);
+        depth = depth->father;
+    }
+    return lst;
+}

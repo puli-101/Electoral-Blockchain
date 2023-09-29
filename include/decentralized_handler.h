@@ -84,4 +84,13 @@ void print_tree(CellTree* ab);
 /*Deletes a tree*/
 void delete_tree(CellTree* ab);
 
+/* Returns pointer of the child of the cell with the maximal height*/
+CellTree* highest_child(CellTree* cell);
+
+/*Returns the hash of the deepest block */
+CellTree* last_node(CellTree* cell);
+
+/*Returns the list of all the vote declarations linked to the longest branch*/
+CellProtected* list_decl_longest_branch(CellTree* tree);
+
 #endif
