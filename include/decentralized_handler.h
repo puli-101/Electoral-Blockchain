@@ -93,4 +93,9 @@ CellTree* last_node(CellTree* cell);
 /*Returns the list of all the vote declarations linked to the longest branch*/
 CellProtected* list_decl_longest_branch(CellTree* tree);
 
+
+/*Adds a vote declaration to the file pending votes.txt*/
+void submit_vote(Protected* p);
+
+
 #endif

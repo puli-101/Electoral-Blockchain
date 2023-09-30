@@ -353,3 +353,47 @@ void submit_vote(Protected* p) {
     free(str);
     fclose(f);
 }
+
+void create_block(CellTree* tree, Key* author, int d) {
+    Block* valid_block = (Block*)malloc(sizeof(Block));
+    test_fatal_error(valid_block,"create_block(tree, author,d)");
+
+    //Extraction of author
+    //may have to be deleted
+    Key* key = (Key*)malloc(sizeof(Key));
+    test_fatal_error(key, "create_block(tree,author,d)");
+    init_key(key, author->val, author->n);
+    //
+
+    valid_block->author = key; //author
+    ////
+
+    //Extraction of the previous hash
+    CellTree* last = last_node(tree);
+
+    unsigned char* hash_copy = (unsigned char*) malloc(sizeof(unsigned char)*SHA256_DIGEST_LENGTH);
+    test_fatal_error(hash_copy,"create_block(tree,author,d)");
+    for (int i = 0; i < SHA256_DIGEST_LENGTH; i++)
+        hash_copy[i] = 0;
+    if (last != NULL) {
+        for (int i = 0; i < SHA256_DIGEST_LENGTH; i++)
+            hash_copy[i] = last->block->hash[i];
+    }
+    valid_block->previous_hash = hash_copy;
+    ////    
+
+    //Allocation of current hash
+    valid_block->hash = (unsigned char*) malloc(sizeof(unsigned char)*SHA256_DIGEST_LENGTH);
+    test_fatal_error(valid_block->hash,"create_block(tree,author,d)");
+
+    //Extract pending vote declarations
+    valid_block->votes = read_protected("blockchain/pending_votes.txt");
+    system("rm blockchain/pending_votes.txt ; touch blockchain/pending_votes.txt");
+
+    //nonce
+    compute_proof_of_work(valid_block,d);
+
+    save_block_file("blockchain/pending_block.txt",valid_block);
+
+    destroy_block(valid_block);
+}

@@ -108,8 +108,8 @@ void insert_head_protected(CellProtected** lst, Protected* pr) {
  * Reads file declarations.txt
  * returns a linked list of the public keys
 */
-CellProtected* read_protected() {
-    FILE* f = fopen("declarations.txt","r");
+CellProtected* read_protected(const char* name) {
+    FILE* f = fopen(name,"r");
     if (f == NULL) {
         fprintf(stderr,"Fatal Error: read_protected()\n");
         exit(-1);
