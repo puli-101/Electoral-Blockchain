@@ -184,3 +184,8 @@ Key* compute_winner(CellProtected* decl, CellKey* candidates, CellKey* voters, i
     delete_hashtable(voters_count);
     return winner;
 }
+
+/*Same as computer_winner but using a blockchain*/
+Key* compute_winner_BT(CellTree* tree, CellKey* candidates, CellKey* voters, int sizeC, int sizeV) {
+    
+}

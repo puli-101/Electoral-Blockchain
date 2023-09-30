@@ -62,7 +62,7 @@ void delete_hashtable(HashTable* t);
  */
 Key* compute_winner(CellProtected* decl, CellKey* candidates, CellKey* voters, int sizeC, int sizeV);
 
-
+/*Same as computer_winner but using a blockchain*/
 Key* compute_winner_BT(CellTree* tree, CellKey* candidates, CellKey* voters, int sizeC, int sizeV);
 
 #endif

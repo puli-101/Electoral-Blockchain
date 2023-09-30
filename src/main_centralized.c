@@ -5,6 +5,7 @@
 #include "simulation.h"
 #include "result_handler.h"
 
+//Testing of centralized version
 int main(int argc, char** argv) {
     int nv = 15, nc = 5;
     if (argc >= 3) {
