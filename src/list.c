@@ -148,12 +148,17 @@ void delete_list_protected(CellProtected* c) {
  * (much easier if CellProtected* was a double linked list)
 */
 void fuse_declarations(CellProtected** l1, CellProtected* l2) {
+    CellProtected* iter;
+    CellProtected* cpy = NULL;
+    for (iter = l2; iter != NULL; iter=iter->next) {
+        insert_head_protected(&cpy, iter->data);
+    }
+    reverse(&cpy);
     if ((*l1) == NULL) {
-        *l1 = l2;
+        *l1 = cpy;
     } else {
-        CellProtected* iter;
         for (iter = *l1; iter->next != NULL; iter = iter->next);
-        iter->next = l2;
+        iter->next = cpy;
     }
 }
 

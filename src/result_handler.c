@@ -193,6 +193,6 @@ Key* compute_winner_BT(CellTree* tree, CellKey* candidates, CellKey* voters, int
 
     Key* winner = compute_winner(votes, candidates, voters,sizeC, sizeV);
 
-    //delete_list_protected(votes);
+    delete_list_protected(votes);
     return winner;
 }
