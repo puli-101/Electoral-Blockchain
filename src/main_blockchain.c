@@ -11,7 +11,8 @@ void submit_discrete(CellProtected* votes, CellKey* citizens, int nc);
 Key* select_author(CellKey* cit, int n);
 
 int main(int argc, char** argv) {
-    int nv = 1000, nc = 5;
+    //nv = 1000
+    int nv = 100, nc = 5;
     if (argc >= 3) {
         nv = atoi(argv[1]);
         nc = atoi(argv[2]);
@@ -30,11 +31,11 @@ int main(int argc, char** argv) {
     //start discrete vote submissions every 10 votes
     CellProtected* votes = read_protected("declarations.txt");
     submit_discrete(votes, citizens, nc);
-    /*
+    
     //calculate the winner from all the declarations
     CellTree* tree = read_tree();
     print_tree(tree);
-
+    /*
     winner = compute_winner_BT(tree, cand, voters, nc*2, nv*2); 
     str = key_to_str(winner);
     printf("Winner: %s\n",str);
@@ -44,7 +45,7 @@ int main(int argc, char** argv) {
     delete_cell_keys(cand);
     delete_cell_keys(citizens);
     delete_list_protected(votes);
-    //delete_tree(tree);
+    destroy_tree(tree);
     return 0;
 }
 
@@ -57,24 +58,25 @@ void submit_discrete(CellProtected* votes, CellKey* citizens, int nc) {
         submit_vote(iter->data);
         if (i % 10 == 0) { 
             sprintf(buffer,"b%d.txt",c);
-            printf("Reading tree...\n");
+            printf("%d. Reading tree...\n",c);
             tree = read_tree();
-            printf("Creating block...\n");
+            printf("%d. Creating block...\n",c);
             create_block(tree,select_author(citizens, rand()%nc),POW);
-            printf("Adding block to blockchain/\n");
+            printf("%d Adding block to blockchain/\n",c);
             add_block(POW, buffer);
             c++;
+            destroy_tree(tree);
         }
     } 
-    if (i%10 != 0) {
-        submit_vote(iter->data);
+    if ((i-1)%10 != 0) {
         sprintf(buffer,"b%d.txt",c);
-        printf("Reading tree...\n");
+        printf("%d. Reading tree...\n",c);
         tree = read_tree();
-        printf("Creating block...\n");
+        printf("%d. Creating block...\n",c);
         create_block(tree,select_author(citizens, rand()%nc),POW);
-        printf("Adding block to blockchain/\n");
+        printf("%d Adding block to blockchain/\n",c);
         add_block(POW, buffer);
+        destroy_tree(tree);
     }
 }
 

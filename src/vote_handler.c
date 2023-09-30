@@ -1,5 +1,13 @@
 #include "vote_handler.h"
 
+/* Checks if obj was alloced properly */
+void test_fatal_error(void* obj, char* msg) {
+    if (obj == NULL) {
+        fprintf(stderr,"Fatal Error: %s\n",msg);
+        exit(-1);
+    }
+}
+
 /* mallocs and initializes a signature using content and size */
 Signature* init_signature(unsigned long* content, int size) {
     Signature* sig = (Signature*)malloc(sizeof(Signature));
@@ -188,6 +196,7 @@ void free_protected(Protected* pr) {
 /*Adds a vote declaration to the file pending votes.txt*/
 void submit_vote(Protected* p) {
     FILE* f = fopen("preprocess/pending_votes.txt", "a");
+    test_fatal_error(f,"submit_vote(p) : fopen");
     char* str = protected_to_str(p);
     fprintf(f,"%s\n",str);
     free(str);

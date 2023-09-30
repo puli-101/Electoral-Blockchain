@@ -9,7 +9,7 @@ all: bin/main_centralized bin/main_blockchain
 #cp -r * ../projet_tests/
 bin/%: src/%.c $(OBJECTS)
 	rm -f tmp*
-	mkdir -p bin
+	mkdir -p bin preprocess blockchain
 	gcc -g -o $@ $^ $(FLAGS) -lssl -lcrypto
 
 obj/%.o: src/%.c include/%.h

@@ -1,0 +1,3 @@
+read_tree() : 252 -> add_child() : 47 -> update_height() : 25
+
+create_block() : 154 -> last_node() : 117 -> highest_child() : 102

@@ -66,4 +66,8 @@ void add_block(int d, char* name);
 */
 CellTree* read_tree();
 
+void destroy_node(CellTree* node);
+
+void destroy_tree(CellTree* ab) ;
+
 #endif

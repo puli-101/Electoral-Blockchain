@@ -1,6 +1,6 @@
 #include "blockchain.h"
 
-#define DEBUG 1
+#define DEBUG 0
 
 /*Creates a node of the blockchain tree (the block b isn't recopied)*/
 CellTree* create_node(Block* b) {
@@ -22,7 +22,7 @@ CellTree* create_node(Block* b) {
  * Returns 1 if the father's height changes
 */
 int update_height(CellTree* father, CellTree* child) {
-    if (father != NULL && child->height+1 > father->height) {
+    if (father != NULL && child !=NULL && child->height+1 > father->height) {
         father->height = child->height + 1;
         return 1;
     } else {
@@ -56,11 +56,18 @@ void delete_node(CellTree* node) {
     free(node);
 }
 
+/* Supprime un noeud de l'arbre */
+void destroy_node(CellTree* node) {
+    destroy_block(node->block); //destroy insted??
+    free(node);
+}
+
 /*
  * Prints the tree ab
  * for each node we print the current hash and height of the block
 */
 void print_tree(CellTree* ab) {
+    if (ab == NULL) return;
     print_tree(ab->nextBro);
     char* str = hash_to_str(ab->block->hash);
     printf("hash: %s\n",str);
@@ -75,6 +82,14 @@ void delete_tree(CellTree* ab) {
     delete_tree(ab->firstChild);
     delete_tree(ab->nextBro);
     delete_node(ab);
+}
+
+/*Deletes a tree*/
+void destroy_tree(CellTree* ab) {
+    if (ab == NULL) return;
+    destroy_tree(ab->firstChild);
+    destroy_tree(ab->nextBro);
+    destroy_node(ab);
 }
 
 /* Returns pointer of the child of the cell with the maximal height*/
@@ -218,6 +233,7 @@ CellTree* read_tree() {
                 test_fatal_error(T[c],"read_tree() : T[c]");
                 T[c]->block = read_block_file(buffer);
                 T[c]->father = T[c]->firstChild = T[c]->nextBro = NULL;
+                T[c]->height = 0;
                 c++;
                 //avoid overflow
                 if (c%500 == 0) {

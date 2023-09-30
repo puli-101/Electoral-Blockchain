@@ -52,4 +52,7 @@ void free_protected(Protected* pr);
 /*Adds a vote declaration to the file pending votes.txt*/
 void submit_vote(Protected* p);
 
+/* Checks if obj was alloced properly */
+void test_fatal_error(void* obj, char* msg);
+
 #endif 
