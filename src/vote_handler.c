@@ -184,3 +184,12 @@ void free_protected(Protected* pr) {
     free(pr->pKey);
     free(pr);
 }
+
+/*Adds a vote declaration to the file pending votes.txt*/
+void submit_vote(Protected* p) {
+    FILE* f = fopen("preprocess/pending_votes.txt", "a");
+    char* str = protected_to_str(p);
+    fprintf(f,"%s\n",str);
+    free(str);
+    fclose(f);
+}

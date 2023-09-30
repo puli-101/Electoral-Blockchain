@@ -3,7 +3,7 @@
 #include "rsa.h"
 #include "vote_handler.h"
 #include "simulation.h"
-#include "decentralized_handler.h"
+#include "block.h"
 
 void print_long_vector (unsigned long* result, int size) {
     printf ("Vector: [ ") ;

@@ -49,4 +49,7 @@ Protected* str_to_protected(char* str);
 void free_signature(Signature* sgn);
 void free_protected(Protected* pr);
 
+/*Adds a vote declaration to the file pending votes.txt*/
+void submit_vote(Protected* p);
+
 #endif 

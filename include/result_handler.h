@@ -2,6 +2,7 @@
 #define _RESULT_HANDLER_H_
 
 #include "list.h"
+#include "blockchain.h"
 
 typedef struct hashcell {
     Key * key ;
@@ -60,5 +61,8 @@ void delete_hashtable(HashTable* t);
  *  we supposes that sizeC and sizeV are larger than the amount of citizens
  */
 Key* compute_winner(CellProtected* decl, CellKey* candidates, CellKey* voters, int sizeC, int sizeV);
+
+
+Key* compute_winner_BT(CellTree* tree, CellKey* candidates, CellKey* voters, int sizeC, int sizeV);
 
 #endif
