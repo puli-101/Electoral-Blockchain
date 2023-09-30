@@ -308,6 +308,8 @@ void delete_tree(CellTree* ab) {
 
 /* Returns pointer of the child of the cell with the maximal height*/
 CellTree* highest_child(CellTree* cell) {
+    if (cell == NULL) return NULL;
+
     int max = -1;
     CellTree* highest = NULL;
     for (CellTree* iter = cell->firstChild;
@@ -322,19 +324,32 @@ CellTree* highest_child(CellTree* cell) {
 
 /*Returns the hash of the deepest block */
 CellTree* last_node(CellTree* cell) {
+    if (cell == NULL) return NULL;
+
     if (cell->firstChild == NULL) {
-        return cell->hash;
+        return cell;
     }
     return last_node(highest_child(cell));
 }
 
 /*Returns the list of all the vote declarations linked to the longest branch*/
 CellProtected* list_decl_longest_branch(CellTree* tree) {
+    if (tree == NULL) return NULL;
+
     CellTree* depth = last_node(tree);
     CellProtected* lst = NULL;
     while(depth != NULL) {
-        fuse_declarations(lst, depth->votes);
+        fuse_declarations(&lst, depth->block->votes);
         depth = depth->father;
     }
     return lst;
+}
+
+/*Adds a vote declaration to the file pending votes.txt*/
+void submit_vote(Protected* p) {
+    FILE* f = fopen("blockchain/pending_votes.txt", "a");
+    char* str = protected_to_str(p);
+    fprintf(f,"%s\n",str);
+    free(str);
+    fclose(f);
 }

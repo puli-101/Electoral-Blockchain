@@ -61,6 +61,6 @@ void delete_list_protected(CellProtected* c);
 void test_fatal_error(void* obj, char* msg);
 
 /*Concatenates l2 at the end of l1: */
-void fuse_declarations(CellProtected* l1, CellProtected* l2);
+void fuse_declarations(CellProtected** l1, CellProtected* l2);
 
 #endif
