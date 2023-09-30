@@ -97,5 +97,16 @@ CellProtected* list_decl_longest_branch(CellTree* tree);
 /*Adds a vote declaration to the file pending votes.txt*/
 void submit_vote(Protected* p);
 
+/* 
+ * Writes a block into pending block.txt from 
+ * the status of the current tree, the author 
+ * and a certain proof of work size
+ *
+*/
+void create_block(CellTree* tree, Key* author, int d);
+
+
+/*Add a pending block to the blockchain if it's valid*/
+void add_block(int d, char* name);
 
 #endif

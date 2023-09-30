@@ -347,13 +347,19 @@ CellProtected* list_decl_longest_branch(CellTree* tree) {
 
 /*Adds a vote declaration to the file pending votes.txt*/
 void submit_vote(Protected* p) {
-    FILE* f = fopen("blockchain/pending_votes.txt", "a");
+    FILE* f = fopen("preprocess/pending_votes.txt", "a");
     char* str = protected_to_str(p);
     fprintf(f,"%s\n",str);
     free(str);
     fclose(f);
 }
 
+/* 
+ * Writes a block into pending block.txt from 
+ * the status of the current tree, the author 
+ * and a certain proof of work size
+ *
+*/
 void create_block(CellTree* tree, Key* author, int d) {
     Block* valid_block = (Block*)malloc(sizeof(Block));
     test_fatal_error(valid_block,"create_block(tree, author,d)");
@@ -387,13 +393,28 @@ void create_block(CellTree* tree, Key* author, int d) {
     test_fatal_error(valid_block->hash,"create_block(tree,author,d)");
 
     //Extract pending vote declarations
-    valid_block->votes = read_protected("blockchain/pending_votes.txt");
-    system("rm blockchain/pending_votes.txt ; touch blockchain/pending_votes.txt");
+    //maybe check if pending_votes.txt exists???
+    valid_block->votes = read_protected("preprocess/pending_votes.txt");
+    system("rm preprocess/pending_votes.txt");
 
     //nonce
     compute_proof_of_work(valid_block,d);
 
-    save_block_file("blockchain/pending_block.txt",valid_block);
+    save_block_file("preprocess/pending_block.txt",valid_block);
 
     destroy_block(valid_block);
+}
+
+/*Add a pending block to the blockchain if it's valid*/
+void add_block(int d, char* name) {
+    Block* b = read_block_file("preprocess/pending_block.txt");
+
+    if (verify_block(b,d)) {
+        char buffer[500];
+        sprintf(buffer,"blockchain/%s",name);
+        save_block_file(buffer,b);
+    }
+
+    system("rm preprocess/pending_block.txt");
+    destroy_block(b);
 }
