@@ -5,8 +5,12 @@
 #include "simulation.h"
 #include "result_handler.h"
 
+#define POW 3
+
+void submit_discrete(CellProtected* votes);
+
 int main(int argc, char** argv) {
-    int nv = 100, nc = 5;
+    int nv = 1000, nc = 5;
     if (argc >= 3) {
         nv = atoi(argv[1]);
         nc = atoi(argv[2]);
@@ -22,18 +26,40 @@ int main(int argc, char** argv) {
     printf("Candidates:\n");
     print_list_keys(cand);
 
-    //filter out fraudulent delcarations
-    CellProtected* dec = read_protected();
+    //start discrete vote submissions every 10 votes
+    CellProtected* votes = read_protected();
+    submit_discrete(votes);
 
-    //calculate the winner from all the declarations
-    winner = compute_winner(dec, cand, voters, nc*2, nv*2); 
+    /*calculate the winner from all the declarations
+    CellTree* tree = read_tree();
+
+    winner = compute_winner_BC(tree, cand, voters, nc*2, nv*2); 
     str = key_to_str(winner);
     printf("Winner: %s\n",str);
 
     free(str);
-    free(winner);
+    free(winner);*/
     delete_cell_keys(cand);
     delete_cell_keys(citizens);
-    delete_list_protected(dec);
+    delete_list_protected(votes);
+    //delete_tree(tree);
     return 0;
+}
+
+void submit_discrete(CellProtected* votes) {
+    CellProtected* iter = votes;
+    char buffer[50];
+    int i, c = 1;
+    for (i = 0; iter; i++, iter = iter->next) {
+        submit_vote(votes->data);
+        if (i % 10 == 0) { 
+            sprintf(buffer,"b%d.txt",c);
+            add_block(POW, buffer);
+            c++;
+        }
+    } 
+    if (i%10 != 0) {
+        sprintf(buffer,"b%d.txt",c);
+        add_block(POW, buffer);
+    }
 }

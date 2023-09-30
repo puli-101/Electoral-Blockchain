@@ -209,15 +209,10 @@ int verify_block(Block* b, int d) {
 
 /* Frees a block b */
 void delete_block(Block* b) {
-    //DO NOT FREE author NOR data FIELD OF EACH CELLPROTECTED* VOTES
+    //DO NOT FREE CELLPROTECTED* VOTES
     free(b->hash);
     free(b->previous_hash);
-    CellProtected* tmp;
-    while(b->votes != NULL) {
-        tmp = b->votes->next;
-        free(b->votes);
-        b->votes = tmp;
-    }
+    free(b->author);
     free(b);
 }
 
