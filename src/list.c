@@ -164,3 +164,17 @@ void fuse_declarations(CellProtected** l1, CellProtected* l2) {
         iter->next = l2;
     }
 }
+
+/* Function to reverse the linked list */
+void reverse(CellProtected** head_ref) {
+    CellProtected* prev   = NULL;
+    CellProtected* current = *head_ref;
+    CellProtected* next;
+    while (current != NULL) {
+        next  = current->next; 
+        current->next = prev;  
+        prev = current;
+        current = next;
+    }
+    *head_ref = prev;
+}

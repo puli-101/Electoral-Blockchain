@@ -1,5 +1,6 @@
 #include "blockchain.h"
 
+#define DEBUG 1
 
 /*Creates a node of the blockchain tree (the block b isn't recopied)*/
 CellTree* create_node(Block* b) {
@@ -160,8 +161,10 @@ void create_block(CellTree* tree, Key* author, int d) {
     system("rm preprocess/pending_votes.txt");
 
     //nonce
+    if (DEBUG)
+        printf("Computing proof of work\n");
     compute_proof_of_work(valid_block,d);
-
+    
     save_block_file("preprocess/pending_block.txt",valid_block);
 
     destroy_block(valid_block);
@@ -175,6 +178,8 @@ void add_block(int d, char* name) {
         char buffer[500];
         sprintf(buffer,"blockchain/%s",name);
         save_block_file(buffer,b);
+    } else if (DEBUG) {
+        fprintf(stderr,"Invalid concatenation of block \'%s\' to blockchain\n",name);
     }
 
     system("rm preprocess/pending_block.txt");

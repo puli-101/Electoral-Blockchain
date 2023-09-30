@@ -84,9 +84,9 @@ void save_block_file(const char* name, Block* bl) {
 */
 Block* read_block_file(const char* name) {
     Block* bl = (Block*)malloc(sizeof(Block));
-    test_fatal_error(bl,"read_block_file(name)");
+    test_fatal_error(bl,"read_block_file(name) : block allocation");
     FILE *f = fopen(name, "r");
-    test_fatal_error(f,"read_block_file(name)");
+    test_fatal_error(f,"read_block_file(name) : open file");
     char buffer[500];
     //pkey author
     fgets(buffer, 500, f);
@@ -108,6 +108,7 @@ Block* read_block_file(const char* name) {
         insert_head_protected(&(bl->votes), pr);
         free_protected(pr);
     }
+    reverse(&(bl->votes));
     fclose(f);
     return bl;
 }

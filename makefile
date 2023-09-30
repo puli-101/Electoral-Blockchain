@@ -17,4 +17,4 @@ obj/%.o: src/%.c include/%.h
 	gcc -c -g -o $@ $< $(FLAGS)
 
 clean:
-	rm -Rf bin/* obj/*.o tmp* ?? .refs .add .current_branch bin/main_testmake
+	rm -Rf bin/* obj/*.o tmp* ?? .refs .add .current_branch bin/main_testmake preprocess/* blockchain/*

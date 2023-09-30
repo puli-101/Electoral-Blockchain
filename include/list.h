@@ -63,4 +63,7 @@ void test_fatal_error(void* obj, char* msg);
 /*Concatenates l2 at the end of l1: */
 void fuse_declarations(CellProtected** l1, CellProtected* l2);
 
+/* Function to reverse the linked list */
+void reverse(CellProtected** head_ref);
+
 #endif
