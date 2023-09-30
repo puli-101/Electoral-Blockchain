@@ -24,7 +24,6 @@ int main(int argc, char** argv) {
 
     //filter out fraudulent delcarations
     CellProtected* dec = read_protected();
-    filter_fraud(&dec);
 
     //calculate the winner from all the declarations
     winner = compute_winner(dec, cand, voters, nc*2, nv*2); 

@@ -187,5 +187,12 @@ Key* compute_winner(CellProtected* decl, CellKey* candidates, CellKey* voters, i
 
 /*Same as computer_winner but using a blockchain*/
 Key* compute_winner_BT(CellTree* tree, CellKey* candidates, CellKey* voters, int sizeC, int sizeV) {
-    
+    //extraction of the vote declaration list out of the longest blockchain branch
+    CellProtected* votes = list_decl_longest_branch(tree);
+    filter_fraud(&votes);
+
+    Key* winner = compute_winner(votes, candidates, voters,sizeC, sizeV);
+
+    //delete_list_protected(votes);
+    return winner;
 }
