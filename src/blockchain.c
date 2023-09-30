@@ -22,7 +22,7 @@ CellTree* create_node(Block* b) {
  * Returns 1 if the father's height changes
 */
 int update_height(CellTree* father, CellTree* child) {
-    if (child->height+1 > father->height) {
+    if (father != NULL && child->height+1 > father->height) {
         father->height = child->height + 1;
         return 1;
     } else {
@@ -36,7 +36,6 @@ int update_height(CellTree* father, CellTree* child) {
 void add_child(CellTree* father, CellTree* child) {
     if (father->firstChild == NULL) {
         father->firstChild = child;
-        
     } else {
         CellTree* iter = father->firstChild;
         while(iter->nextBro != NULL) {

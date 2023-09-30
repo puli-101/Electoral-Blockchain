@@ -67,7 +67,13 @@ void submit_discrete(CellProtected* votes, CellKey* citizens, int nc) {
         }
     } 
     if (i%10 != 0) {
+        submit_vote(iter->data);
         sprintf(buffer,"b%d.txt",c);
+        printf("Reading tree...\n");
+        tree = read_tree();
+        printf("Creating block...\n");
+        create_block(tree,select_author(citizens, rand()%nc),POW);
+        printf("Adding block to blockchain/\n");
         add_block(POW, buffer);
     }
 }
