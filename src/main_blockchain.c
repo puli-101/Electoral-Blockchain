@@ -57,6 +57,7 @@ void submit_discrete(CellProtected* votes, CellKey* citizens, int nc) {
     int i, c = 1;
     for (i = 1; iter; i++, iter = iter->next) {
         submit_vote(iter->data);
+        //every 10 votes we add a block
         if (i % 10 == 0) { 
             sprintf(buffer,"b%d.txt",c);
             printf("%d. Reading tree...\n",c);

@@ -1,1 +1,3 @@
 Optimisations: avoid using a tree each time a block is created
+reorganize candidates.txt, declarations.txt and keys.txt so that they are in preprocess/
+add readme describing voting process
