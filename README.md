@@ -64,6 +64,17 @@ To set up the election, it is necessary to first generate a unique electoral car
 
 In the context of this project, we will simulate this voting process using three files: one containing the keys of all citizens, one indicating the candidates, and one containing signed declarations.
 
+As part of this project, we will simulate the operation of a blockchain as following:
+- Blockchain: directory representing the blockchain that a citizen has built locally, from
+blocks that it received from the network. This directory contains one file per block of the blockchain.
+- Pending block: file containing the last block created and sent by one of the assessors. This block
+is waiting to be added to the blockchain.
+- Pending votes.txt: text file containing the votes waiting to be added to a block.
+Start by creating the "Blockchain" directory. In this exercise we will simulate submissions
+voting by citizens and the creation of valid blocks by assessors (volunteer citizens). Then,
+we will create the corresponding tree of blocks, and calculate the winner of the election by trusting
+to the longest chain in the tree.
+
 ## Execution
 It is required to install
 
